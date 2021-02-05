@@ -1,0 +1,68 @@
+{{> nav }}
+<div class="row justify-content-center pt-3">
+    <div class="card col-md-5">
+        <div class="card-header">
+            <h4 class="text-center">Farmer Registration</h4>
+            {{> alerts }}
+        </div>
+        <div class="card-body">
+            <form action="/accounts/register" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email"
+                           placeholder="Enter your email"
+                           value="{{#if body.email}}{{ body.email }}{{/if}}" required
+                           aria-describedby="email-error">
+                    <span id="email-error"
+                          class="form-text text-danger">{{#if errors.email }}{{errors.email}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" placeholder="Enter your first name"
+                           value="{{#if body.firstname}}{{ body.firstname }}{{/if}}" required
+                           aria-describedby="firstname-error">
+                    <span id="firstname-error"
+                          class="form-text text-danger">{{#if errors.firstname }}{{errors.firstname}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" placeholder="Enter your last name"
+                           value="{{#if body.lastname}}{{ body.lastname }}{{/if}}" required
+                           aria-describedby="lastname-error">
+                    <span id="lastname-error"
+                          class="form-text text-danger">{{#if errors.lastname }}{{errors.lastname}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password"
+                           placeholder="Enter a strong password" required
+                           aria-describedby="password-error">
+                    <span id="password-error"
+                          class="form-text text-danger">{{#if errors.password }}{{errors.password}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" class="form-control" name="password2"
+                           placeholder="Confirm password" required
+                           aria-describedby="password2-error">
+                    <span id="password2-error"
+                          class="form-text text-danger">{{#if errors.password2 }}{{errors.password2}}{{/if}}</span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <p>Already registered?<a href="/accounts/login"> Login</a></p>
+        </div>
+    </div>
+</div>
+
+{{> scripts }}
+
+{{> footer }}

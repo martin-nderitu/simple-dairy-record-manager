@@ -1,0 +1,112 @@
+{{> admin_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-subtitle">filter and sort by one or more fields</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="form-inline" method="get" action="/admin/reports">
+                                <label class="sr-only" for="farmerId">Farmer id</label>
+                                <input type="number" min="1" class="form-control my-1 mr-sm-4 w-25"
+                                       id="farmerId" name="farmerId"
+                                       value="{{#if query.farmerId}}{{query.farmerId}}{{/if}}"
+                                       placeholder="filter by farmer id">
+
+                                <label class="sr-only" for="shift">Shift</label>
+                                <select class="form-control my-1 mr-sm-4" id="shift" name="shift">
+                                    <option value="">Select shift</option>
+                                    <option value="morning">Morning</option>
+                                    <option value="afternoon">Afternoon</option>
+                                    <option value="evening">Evening</option>
+                                </select>
+
+                                <label class="sr-only" for="_from">From</label>
+                                <input type="text" class="form-control my-1 mr-sm-4" id="_from" name="from"
+                                       value="{{#if query.from}}{{ query.from }}{{/if}}"
+                                       placeholder="From date">
+
+                                <label class="sr-only" for="_to">To</label>
+                                <input type="text" class="form-control my-1 mr-sm-4" id="_to" name="to"
+                                       value="{{#if query.to}}{{ query.to }}{{/if}}"
+                                       placeholder="To date">
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h4>Report</h4>
+                        </div>
+                        <div class="col-md-6 text-left">
+                            Report for
+                            {{#if query.farmerId}}
+                                {{#if report }} {{#each report}} {{farmer}}, {{/each}} {{/if}}
+                                farmer id {{query.farmerId}}
+                            {{else}} all farmers {{/if}}
+                            {{#if query.from}} from {{query.from}} {{/if}}
+                            {{#if query.to}} to {{query.to}} {{/if}}
+                            {{#unless query.from }} {{#unless query.to }} for all time {{/unless}}{{/unless}}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{#if report }}
+                        <div class="container-fluid">
+                                <table class="table" id="recordsTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Farmer id</th>
+                                            <th scope="col">Farmer</th>
+                                            <th scope="col">Total litres</th>
+                                            <th scope="col">Rate</th>
+                                            <th scope="col">Total pay</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{#each report}}
+                                        <tr>
+                                            <td>{{id}}</td>
+                                            <td>{{farmerId}}</td>
+                                            <td>{{farmer}}</td>
+                                            <td>{{totalLitres}}</td>
+                                            <td>{{rate}}</td>
+                                            <td>{{total}}</td>
+                                        </tr>
+                                    {{/each}}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    {{else}}
+                        <h3 class="text-center">No milk records were found to generate report</h3>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{> scripts }}
+
+{{> footer }}

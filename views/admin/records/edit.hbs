@@ -1,0 +1,163 @@
+{{> admin_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+{{#if record }}
+    <div class="container-fluid pt-3">
+        <div class="row">
+            <div class="col-md-3">
+                {{# if record.farmer }}
+                    <div class="card">
+                        <div class="card-header">
+                            Farmer details
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Id</th>
+                                        <td>{{ record.farmer.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{record.farmer.fullName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{ record.farmer.email }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{/if}}
+                <br>
+                {{#if record.milkCollector}}
+                    <div class="card">
+                        <div class="card-header">
+                            Milk collector details
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <th>Id</th>
+                                    <td>{{ record.milkCollector.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>{{record.milkCollector.fullName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ record.milkCollector.email }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center">View/Edit/Delete Milk Record</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/admin/record/{{record.id}}/edit" method="POST">
+                            <div class="form-group">
+                                <label for="farmerId">Farmer id</label>
+                                <input type="number" class="form-control" id="farmerId" name="farmerId"
+                                       placeholder="Please enter a valid farmer id"
+                                       value="{{#if record.farmerId }}{{ record.farmerId }}{{/if}}"
+                                       min="1" aria-describedby="farmerId-error" required>
+                                <span id="farmerId-error" class="form-text text-danger"
+                                    >{{#if errors.farmerId }}{{ errors.farmerId }}{{/if}}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="amount">Milk delivered (litres)</label>
+                                <input type="number" class="form-control" id="amount" name="amount"
+                                       placeholder="Please enter amount of milk delivered in litres"
+                                       value="{{#if record.amount }}{{ record.amount }}{{/if}}"
+                                       min="0" step="0.01"
+                                       aria-describedby="amount-error"
+                                       required>
+                                <span id="amount-error"
+                                      class="form-text text-danger">{{#if errors.amount }}{{ errors.amount }}{{/if}}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="shift">Shift</label>
+                                <select class="form-control" id="shift" name="shift" required>
+                                    <option value="">---------</option>
+                                    <option value="morning">Morning</option>
+                                    <option value="afternoon">Afternoon</option>
+                                    <option value="evening">Evening</option>
+                                </select>
+                                <span class="form-text text-danger">{{#if errors.shift }}{{ errors.shift }}{{/if}}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="createdAt">Date created</label>
+                                <input type="text" class="form-control" id="createdAt" name="createdAt"
+                                       value="{{#if record.createdAt}}{{ record.createdAt }}{{/if}}" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="updatedAt">Last updated</label>
+                                <input type="text" class="form-control" id="updatedAt" name="updatedAt"
+                                       value="{{#if record.updatedAt}}{{ record.updatedAt }}{{/if}}" disabled>
+                            </div>
+
+                            <input type="hidden" name="id" value="{{record.id}}">
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-danger"
+                                        data-toggle="modal" data-target="#deleteRecord">Delete</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteRecord" tabindex="-1"
+         aria-labelledby="deleteRecordLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteRecordLabel">Delete Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to delete this record? This action cannot be undone.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <a href="/admin/record/{{record.id}}/destroy" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+
+{{> scripts }}
+
+<script>
+    const shift = `{{record.shift}}` || undefined;
+    if (shift) {
+        $("#shift").val(shift);
+    }
+</script>
+
+{{> footer }}

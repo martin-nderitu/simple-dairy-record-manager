@@ -1,0 +1,32 @@
+{
+  "name": "sdrm",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.mjs"
+  },
+  "dependencies": {
+    "@types/node": "^14.14.9",
+    "argon": "^2.0.21",
+    "argon2": "^0.27.1",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.5.3",
+    "cookie-parser": "~1.4.4",
+    "date-fns": "^2.16.1",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.9.2",
+    "flatpickr": "^4.6.9",
+    "hbs": "~4.0.4",
+    "http-errors": "~1.6.3",
+    "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
+    "mariadb": "^2.5.2",
+    "morgan": "~1.9.1",
+    "popper.js": "^1.16.1",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
+  }
+}

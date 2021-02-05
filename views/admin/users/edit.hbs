@@ -1,0 +1,115 @@
+{{> admin_nav }}
+
+{{#if userData }}
+<div class="row justify-content-center pt-3">
+    <div class="card col-md-6">
+        <div class="card-header">
+            <h4 class="text-center">View/Edit/Delete User</h4>
+            {{> alerts }}
+        </div>
+        <div class="card-body">
+            <form action="/admin/users/{{userData.id}}/edit" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email"
+                           placeholder="Enter your email"
+                           value="{{#if userData.email}}{{ userData.email }}{{/if}}" required disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Firstname</label>
+                    <input type="text" class="form-control" name="firstname" placeholder="Enter your first name"
+                           value="{{#if userData.firstname}}{{ userData.firstname }}{{/if}}" required
+                           aria-describedby="firstname-error">
+                    <span id="firstname-error"
+                          class="form-text text-danger">{{#if errors.firstname }}{{errors.firstname}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Lastname</label>
+                    <input type="text" class="form-control" name="lastname" placeholder="Enter your last name"
+                           value="{{#if userData.lastname}}{{ userData.lastname }}{{/if}}" required
+                           aria-describedby="lastname-error">
+                    <span id="lastname-error"
+                          class="form-text text-danger">{{#if errors.lastname }}{{errors.lastname}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select class="form-control" id="role" name="role" required>
+                        <option>---------</option>
+                        <option value="farmer">Farmer</option>
+                        <option value="milk collector">Milk Collector</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <span class="form-text text-danger">{{#if errors.role }}{{errors.role}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" class="form-check-input" id="active" name="active"
+                               {{#if userData.active}}checked{{/if}} value="1">
+                        <label class="form-check-label" for="active">Active</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="createdAt">Date created</label>
+                    <input type="text" class="form-control" id="createdAt" name="createdAt"
+                           value="{{#if userData.createdAt}}{{ userData.createdAt }}{{/if}}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="updatedAt">Last updated</label>
+                    <input type="text" class="form-control" id="updatedAt" name="updatedAt"
+                           value="{{#if userData.updatedAt}}{{ userData.updatedAt }}{{/if}}" disabled>
+                </div>
+
+                <input type="hidden" id="id" name="id" value="{{userData.id}}">
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-danger"
+                            data-toggle="modal" data-target="#deleteUser">Delete</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteUser" tabindex="-1"
+     aria-labelledby="deleteUserLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserLabel">Delete User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Are you sure you want to delete this user? This action cannot be undone.
+                    The user and all associated data will be lost.
+                    If unsure, uncheck the active checkbox to deactivate the user.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                <a href="/admin/users/{{userData.id}}/destroy" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> scripts }}
+
+<script>
+    const role = `{{userData.role}}` || undefined;
+    if (role) { $("#role").val(role); }
+</script>
+
+{{/if}}
+
+{{> footer }}

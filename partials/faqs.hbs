@@ -1,0 +1,30 @@
+{{#if faqs }}
+    <div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Faqs</h4>
+    </div>
+    <div class="card-body">
+        <div class="accordion" id="faqsAccordion">
+            {{#each faqs }}
+                <div class="card">
+                    <div class="card-header" id="heading{{id}}">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                                    data-target="#collapse{{id}}" aria-expanded="true" aria-controls="collapse{{id}}">
+                                {{question}}
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapse{{id}}" class="collapse" aria-labelledby="heading{{id}}"
+                         data-parent="#faqsAccordion">
+                        <div class="card-body">
+                            {{answer}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+{{/if}}

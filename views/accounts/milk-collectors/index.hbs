@@ -1,0 +1,159 @@
+{{> milk_collectors_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-subtitle">search, filter and sort by one or more fields</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="form-inline" method="get" action="/milk-collectors/index">
+                                <label class="sr-only" for="search">Search</label>
+                                <input type="number" min="1" class="form-control my-1 mr-sm-4 w-25"
+                                       id="search" name="search"
+                                       value="{{#if query.search}}{{query.search}}{{/if}}"
+                                       placeholder="search by farmer id">
+
+                                <label class="sr-only" for="shift">Shift</label>
+                                <select class="form-control my-1 mr-sm-4" id="shift" name="shift">
+                                    <option value="">Select shift</option>
+                                    <option value="morning">Morning</option>
+                                    <option value="afternoon">Afternoon</option>
+                                    <option value="evening">Evening</option>
+                                </select>
+
+
+                                {{#if columns }}
+                                    <label class="sr-only" for="sortBy">Sort by</label>
+                                    <select class="form-control my-1 mr-sm-4"
+                                            id="sortBy" name="sortBy">
+                                        <option value="">Select column to sort by</option>
+                                        {{#each columns }}
+                                            <option value="{{value}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+
+                                    <label class="sr-only" for="order">Order</label>
+                                    <select class="form-control my-1 mr-sm-4" id="order" name="order">
+                                        <option value="">Select sort order</option>
+                                        <option value="desc">DESC</option>
+                                        <option value="asc">ASC</option>
+                                    </select>
+                                {{/if}}
+
+                                <label class="sr-only" for="from">From</label>
+                                <input type="text" class="form-control my-1 mr-sm-4" id="from" name="from"
+                                       value="{{#if query.from}}{{ query.from }}{{/if}}"
+                                       placeholder="From date">
+
+                                <label class="sr-only" for="to">To</label>
+                                <input type="text" class="form-control my-1 mr-sm-4" id="to" name="to"
+                                       value="{{#if query.to}}{{ query.to }}{{/if}}"
+                                       placeholder="To date">
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Milk records</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/milk-collectors/record/add" class="btn btn-primary float-right">Add record</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{#if milkRecords }}
+                        <div class="container-fluid">
+                            <table class="table" id="usersTable">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Farmer id</th>
+                                        <th scope="col">Farmer</th>
+                                        <th scope="col">Amount(litres)</th>
+                                        <th scope="col">Shift</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{#each milkRecords}}
+                                        <tr>
+                                            <td>
+                                                <a href="/milk-collectors/record/{{id}}/edit">
+                                                    {{id}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{farmer.id}}
+                                            </td>
+                                            <td>{{farmer.fullName}}</td>
+                                            <td>{{amount}}</td>
+                                            <td>{{shift}}</td>
+                                            <td>{{createdAt}}</td>
+                                        </tr>
+                                    {{/each}}
+                                    </tbody>
+                                </table>
+                        </div>
+                    {{else}}
+                        <h3 class="text-center">No milk records entered yet</h3>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    {{> pagination }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{> scripts }}
+
+<script>
+    let query = "";
+    const search = `{{query.search}}` || undefined;
+    if (search) { query += `&search=${search}`; }
+
+    const shift = `{{query.shift}}` || undefined;
+    if (shift) {
+        $("#shift").val(shift);
+        query += `&shift=${shift}`;
+    }
+
+    const sortBy = `{{query.sortBy}}`|| undefined;
+    const order = `{{query.order}}`|| undefined;
+    if (sortBy) {
+        $("#sortBy").val(sortBy);
+        query += `&sortBy=${sortBy}`;
+    }
+    if (order) {
+        $("#order").val(order);
+        query += `&order=${order}`;
+    }
+
+    $("#pager li a").each(function() {
+        this.href += query;
+    });
+</script>
+
+{{> footer }}

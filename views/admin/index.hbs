@@ -1,0 +1,70 @@
+{{> admin_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Users</h4>
+                </div>
+                <div class="card-body">
+                    {{#if users}}
+                        <p>{{users.count}} users</p>
+                        <p>{{users.farmers}} farmers</p>
+                        <p>{{users.milkCollectors}} milk collectors</p>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <a href="/admin/users/create" class="">+Create User</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Milk Records</h4>
+                </div>
+                <div class="card-body">
+                    {{#if milkRecords }}
+                        <p>{{milkRecords.count}} milk deliveries</p>
+                        <p>{{milkRecords.totalLitres}} litres delivered</p>
+                    {{else}}
+                        <p>No records added yet</p>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <a href="/admin/record/add" class="">+Add record</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Current rate</h4>
+                </div>
+                <div class="card-body">
+                    {{#if currentRate }}
+                        <p>Price per litre of milk: {{currentRate.rate}}</p>
+                    {{ else }}
+                        <p>No rates found</p>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <a href="/admin/rate/add" class="">+Add rate</a> |
+                    <a href="/admin/rate/{{currentRate.id}}/edit" class="">Edit current rate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{> scripts }}
+
+{{> footer }}

@@ -1,0 +1,11 @@
+<div class="form-group form-check-inline">
+    <label for="limit">Rows:</label>
+    <input type="number" class="form-control ml-2"
+           name="limit" id="limit"
+           min="5" max="500" value=""
+        {{#if errors.limit }}
+           data-toggle="tooltip" data-placement="top" title="{{errors.limit}}"
+        {{/if}}
+           required>
+    <button type="submit" class="btn btn-primary ml-2">Submit</button>
+</div>

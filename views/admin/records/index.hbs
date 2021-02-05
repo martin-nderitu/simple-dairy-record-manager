@@ -1,0 +1,213 @@
+{{> admin_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-subtitle">search, filter and sort by one or more fields</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="form-inline" method="get" action="/admin/records">
+                                <label class="sr-only" for="search">Search</label>
+                                <input type="number" min="1" class="form-control my-1 mr-sm-4 w-25"
+                                       id="search" name="search"
+                                       value="{{#if query.search}}{{query.search}}{{/if}}"
+                                       placeholder="search by farmer/milk collector id">
+
+                                <label class="sr-only" for="shift">Shift</label>
+                                <select class="form-control my-1 mr-sm-4" id="shift" name="shift">
+                                    <option value="">Select shift</option>
+                                    <option value="morning">Morning</option>
+                                    <option value="afternoon">Afternoon</option>
+                                    <option value="evening">Evening</option>
+                                </select>
+
+
+                                {{#if columns }}
+                                    <label class="sr-only" for="sortBy">Sort by</label>
+                                    <select class="form-control my-1 mr-sm-4"
+                                            id="sortBy" name="sortBy">
+                                        <option value="">Select column to sort by</option>
+                                        {{#each columns }}
+                                            <option value="{{value}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+
+                                    <label class="sr-only" for="order">Order</label>
+                                    <select class="form-control my-1 mr-sm-4" id="order" name="order">
+                                        <option value="">Select sort order</option>
+                                        <option value="desc">DESC</option>
+                                        <option value="asc">ASC</option>
+                                    </select>
+                                {{/if}}
+
+                                <label class="sr-only" for="from">From</label>
+                                <input type="text" class="form-control my-1 mr-sm-4" id="from" name="from"
+                                       value="{{#if query.from}}{{ query.from }}{{/if}}"
+                                       placeholder="From date">
+
+                                <label class="sr-only" for="to">To</label>
+                                <input type="text" class="form-control my-1 mr-sm-4" id="to" name="to"
+                                       value="{{#if query.to}}{{ query.to }}{{/if}}"
+                                       placeholder="To date">
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Milk records</h4>
+                        </div>
+                        <div class="col-md-6">
+                            Current price per litre: {{#if currentRate }}{{currentRate.rate}}{{/if}}
+                            <a href="/admin/record/add" class="btn btn-primary float-right">Add record</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{#if milkRecords }}
+                        <div class="container-fluid">
+                            <form method="get" action="/admin/records/actions">
+                                <div class="form-group form-check-inline">
+                                    <label for="role">Action:</label>
+                                    <select class="form-control ml-2"
+                                            id="action" name="action" required>
+                                        <option value="">---------</option>
+                                        <option value="deleteSelected">Delete selected</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm ml-2">Go</button>
+                                </div>
+
+                                <table class="table" id="recordsTable">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">
+                                            <input type="checkbox" id="selectAll" name="selectAll">
+                                        </th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Farmer id</th>
+                                        <th scope="col">Farmer</th>
+                                        <th scope="col">Amount(litres)</th>
+                                        <th scope="col">Shift</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Rate</th>
+                                        <th scope="col">Milk collector</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{#each milkRecords}}
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="milkRecordIds" value="{{id}}">
+                                            </td>
+                                            <td>
+                                                <a href="/admin/record/{{id}}/edit">
+                                                    {{id}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/admin/users/{{farmer.id}}/edit">
+                                                    {{farmer.id}}
+                                                </a>
+                                            </td>
+                                            <td>{{farmer.fullName}}</td>
+                                            <td>{{amount}}</td>
+                                            <td>{{shift}}</td>
+                                            <td>{{createdAt}}</td>
+                                            <td>{{rate.rate}}</td>
+                                            <td>{{milkCollector.fullName}}</td>
+                                        </tr>
+                                    {{/each}}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    {{else}}
+                        <h3 class="text-center">No milk records entered yet</h3>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-8">
+                            {{> pagination }}
+                        </div>
+                        <div class="col-md-4">
+                            <form method="get" action="/admin/faqs">
+                                {{> limit }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{> scripts }}
+
+<script>
+    $("#selectAll").click(function() {
+        let checkedStatus = this.checked;
+        $("#recordsTable tbody tr").find("td:first :checkbox").each(function() {
+            $(this).prop("checked", checkedStatus);
+        });
+    });
+
+    $(`#{{paginator.currentPage}}`).addClass("active");
+
+    const search = `{{query.search}}` || undefined;
+    const shift = `{{query.shift}}` || undefined;
+    const sortBy = `{{query.sortBy}}`|| undefined;
+    const order = `{{query.order}}`|| undefined;
+    const limit = `{{query.limit}}` || undefined;
+    const paginatorLimit = `{{paginator.limit}}` || undefined;
+    const limitError = `{{errors.limit}}` || undefined;
+    let query = "";
+
+    if (limit) {
+        $("#limit").val(limit);
+        query += `&limit=${limit}`;
+    } else if (paginatorLimit) {
+        $("#limit").val(paginatorLimit);
+    }
+
+    if (search) { query += `&search=${search}`; }
+
+    if (shift) {
+        $("#shift").val(shift);
+        query += `&shift=${shift}`;
+    }
+
+    if (sortBy) {
+        $("#sortBy").val(sortBy);
+        query += `&sortBy=${sortBy}`;
+    }
+    if (order) {
+        $("#order").val(order);
+        query += `&order=${order}`;
+    }
+
+    $("#pager li a").each(function() {
+        this.href += query;
+    });
+</script>
+
+{{> footer }}

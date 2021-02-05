@@ -1,0 +1,38 @@
+{{#if paginator.enablePagination }}
+    <nav aria-label="User pages">
+        <ul class="pagination" id="pager">
+            {{#if paginator.pages.first}}
+                <li class="page-item">
+                    <a href="{{paginator.path}}?page=1" class="page-link">First</a>
+                </li>
+            {{/if}}
+
+            {{#if paginator.pages.prev}}
+                <li class="page-item">
+                    <a href="{{paginator.path}}?page={{paginator.pages.prev}}" class="page-link">Prev</a>
+                </li>
+            {{/if}}
+
+            {{#each paginator.pages.pageList}}
+                <li class="page-item" id="{{this}}">
+                    <a class="page-link" href="{{paginator.path}}?page={{this}}">{{this}}</a>
+                </li>
+            {{/each}}
+
+            {{#if paginator.pages.next}}
+                <li class="page-item">
+                    <a href="{{paginator.path}}?page={{paginator.pages.next}}"
+                    class="page-link">Next</a>
+                </li>
+            {{/if}}
+
+            {{#if paginator.pages.last}}
+                <li class="page-item">
+                    <a href="{{paginator.path}}?page={{paginator.pages.last}}"
+                    class="page-link">Last</a>
+                </li>
+            {{/if}}
+        </ul>
+    </nav>
+    <p>Showing {{paginator.from}}-{{paginator.to}} of {{count}} records</p>
+{{/if}}

@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">
+            <a href="/" class="navbar-brand font-weight-bold"><h2>SDRM</h2></a>
+        </span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navContent"
+                aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                {{#if user}}
+                    <span class="navbar-text">{{user.firstname}} logged in</span>
+                    <li class="nav-item">
+                        <a type="button" class="btn btn-primary ml-2" href="/accounts/logout">Logout</a>
+                    </li>
+                {{else}}
+                    <li class="nav-item">
+                        <a type="button" class="btn btn-primary mr-2" href="/accounts/login">Login</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a type="button" class="btn btn-primary" href="/accounts/register">Register</a>
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+</nav>

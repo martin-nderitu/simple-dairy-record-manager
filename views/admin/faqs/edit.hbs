@@ -1,0 +1,118 @@
+{{> admin_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+{{#if faq }}
+    <div class="container-fluid pt-3">
+        <div class="row">
+            <div class="col-md-3">
+                {{# if faq.author }}
+                    <div class="card">
+                        <div class="card-header">
+                            Author details
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <th>Id</th>
+                                    <td>{{ faq.author.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>{{faq.author.fullName}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ faq.author.email }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-center">View/Edit/Delete Faq</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/admin/faq/{{faq.id}}/edit" method="POST">
+
+                            <div class="form-group">
+                                <label for="question">Question</label>
+                                <textarea class="form-control" name="question" rows="5"
+                                          aria-describedby="question-error" placeholder="Enter a question"
+                                          required>{{#if faq.question}}{{faq.question}}{{/if}}</textarea>
+                                <span class="form-text text-danger"
+                                      id="question-error">{{#if errors.question }}{{errors.question}}{{/if}}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="answer">Answer</label>
+                                <textarea class="form-control" name="answer" rows="5"
+                                          aria-describedby="answer-error"
+                                          placeholder="Enter an answer to the question above"
+                                          required>{{#if faq.answer}}{{faq.answer}}{{/if}}</textarea>
+                                <span class="form-text text-danger"
+                                      id="answer-error">{{#if errors.answer }}{{errors.answer}}{{/if}}</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="createdAt">Date created</label>
+                                <input type="text" class="form-control" id="createdAt" name="createdAt"
+                                       value="{{#if faq.createdAt}}{{ faq.createdAt }}{{/if}}" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="updatedAt">Last updated</label>
+                                <input type="text" class="form-control" id="updatedAt" name="updatedAt"
+                                       value="{{#if faq.updatedAt}}{{ faq.updatedAt }}{{/if}}" disabled>
+                            </div>
+
+                            <input type="hidden" name="id" value="{{faq.id}}">
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-danger"
+                                        data-toggle="modal" data-target="#deleteFaq">Delete</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteFaq" tabindex="-1"
+         aria-labelledby="deleteFaqLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteFaqLabel">Delete Faq</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to delete this faq? This action cannot be undone.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <a href="/admin/faq/{{faq.id}}/destroy" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+
+{{> scripts }}
+
+{{> footer }}

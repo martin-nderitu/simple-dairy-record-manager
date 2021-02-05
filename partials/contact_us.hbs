@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="card-header" id="contactUs">
+        <h4 class="card-title">Contact Us</h4>
+        {{>alerts}}
+    </div>
+    <div class="card-body">
+        <form action="/contact-us" method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email"
+                       placeholder="Please enter your email"
+                       value="{{#if body.email}}{{ body.email }}{{/if}}"
+                       aria-describedby="email-error" required>
+                <span class="form-text text-danger"
+                      id="email-error">{{#if errors.email }}{{errors.email}}{{/if}}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="fullName">Name</label>
+                <input type="text" class="form-control" name="name"
+                       placeholder="Please enter your full name"
+                       value="{{#if body.name }}{{ body.name }}{{/if}}"
+                       aria-describedby="email-error" required>
+                <span class="form-text text-danger"
+                      id="email-error">{{#if errors.name }}{{errors.name}}{{/if}}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" class="form-control" name="subject"
+                       placeholder="Please enter the subject of your message"
+                       value="{{#if body.subject }}{{ body.subject }}{{/if}}"
+                       aria-describedby="email-error" required>
+                <span class="form-text text-danger"
+                      id="email-error">{{#if errors.subject }}{{errors.subject}}{{/if}}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea class="form-control" name="message" rows="5"
+                          aria-describedby="message-error" placeholder="Enter your message"
+                          required>{{#if body.message}}{{body.message}}{{/if}}</textarea>
+                <span class="form-text text-danger"
+                      id="message-error">{{#if errors.message }}{{errors.message}}{{/if}}</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</div>

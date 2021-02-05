@@ -1,0 +1,36 @@
+{{> admin_nav }}
+<div class="row justify-content-center pt-3">
+    <div class="card col-md-5">
+        <div class="card-header">
+            <h4 class="text-center">Add record</h4>
+            {{> alerts }}
+        </div>
+        <div class="card-body">
+            <form action="/admin/faq/add" method="POST">
+                <div class="form-group">
+                    <label for="question">Question</label>
+                    <textarea class="form-control" name="question" rows="5"
+                              aria-describedby="question-error" placeholder="Enter a question"
+                              required>{{#if body.question}}{{body.question}}{{/if}}</textarea>
+                    <span class="form-text text-danger"
+                          id="question-error">{{#if errors.question }}{{errors.question}}{{/if}}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="answer">Answer</label>
+                    <textarea class="form-control" name="answer" rows="5"
+                              aria-describedby="answer-error" placeholder="Enter an answer to the question above"
+                              required>{{#if body.answer}}{{body.answer}}{{/if}}</textarea>
+                    <span class="form-text text-danger"
+                          id="answer-error">{{#if errors.answer }}{{errors.answer}}{{/if}}</span>
+                </div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{{> scripts }}
+
+{{> footer }}

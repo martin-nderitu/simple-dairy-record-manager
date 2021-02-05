@@ -1,0 +1,211 @@
+{{> admin_nav }}
+
+<div class="container-fluid pt-3">
+    {{> alerts }}
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-subtitle">search, filter and sort by one or more fields</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form class="form-inline" method="get" action="/admin/users">
+                                <label class="sr-only" for="search">Search</label>
+                                <input type="search" class="form-control my-1 mr-sm-4 w-25"
+                                       id="search" name="search"
+                                       value="{{#if query.search}}{{query.search}}{{/if}}"
+                                       placeholder="search by id, email, first/last name">
+
+                                <label class="sr-only" for="role">Role</label>
+                                <select class="form-control my-1 mr-sm-4" id="role" name="role">
+                                    <option value="">Select role</option>
+                                    <option value="farmer">Farmer</option>
+                                    <option value="milk collector">Milk Collector</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+
+                                {{#if columns }}
+                                    <label class="sr-only" for="sortBy">Sort by</label>
+                                    <select class="form-control my-1 mr-sm-4"
+                                            id="sortBy" name="sortBy">
+                                        <option value="">Select column to sort by</option>
+                                        {{#each columns }}
+                                            <option value="{{value}}">{{name}}</option>
+                                        {{/each}}
+                                    </select>
+
+                                    <label class="sr-only" for="order">Order</label>
+                                    <select class="form-control my-1 mr-sm-4" id="order" name="order">
+                                        <option value="">Select sort order</option>
+                                        <option value="desc">DESC</option>
+                                        <option value="asc">ASC</option>
+                                    </select>
+                                {{/if}}
+
+                                <div class="form-check mb-2 mr-sm-4">
+                                    <input type="checkbox" class="form-check-input"
+                                           id="active" name="active" value="1">
+                                    <label class="form-check-label" for="active">Active</label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Users</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="/admin/users/create" class="btn btn-primary float-right">Create User</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{#if users }}
+                        <div class="container-fluid">
+                            <form method="get" action="/admin/users/actions">
+                                <div class="form-group form-check-inline">
+                                    <label for="action">Action:</label>
+                                    <select class="form-control ml-2" id="action" name="action" required>
+                                        <option value="">---------</option>
+                                        <optgroup label="With selected items">
+                                            <option value="deleteSelected">Delete</option>
+                                            <option value="markInactive">Mark inactive</option>
+                                            <option value="activateInactive">Activate inactive</option>
+                                        </optgroup>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary ml-2">Go</button>
+                                </div>
+
+                                <table class="table" id="usersTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">
+                                                <input type="checkbox" id="selectAll">
+                                            </th>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Firstname</th>
+                                            <th scope="col">Lastname</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Active</th>
+                                            <th scope="col">Date created</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each users}}
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="userIds" value="{{id}}">
+                                                </td>
+                                                <td scope="row">
+                                                    <a href="/admin/users/{{ id }}/edit">
+                                                        {{id}}
+                                                    </a>
+                                                </td>
+                                                <td>{{email}}</td>
+                                                <td>{{firstname}}</td>
+                                                <td>{{lastname}}</td>
+                                                <td>{{role}}</td>
+                                                <td>{{active}}</td>
+                                                <td>{{createdAt}}</td>
+                                            </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    {{else}}
+                        <h3 class="text-center">No users found</h3>
+                    {{/if}}
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-md-8">
+                            {{> pagination }}
+                        </div>
+                        <div class="col-md-4">
+                            <form method="get" action="/admin/users">
+                                {{> limit }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{> scripts }}
+
+<script>
+    $("#selectAll").click(function() {
+        let checkedStatus = this.checked;
+        $("#usersTable tbody tr").find("td:first :checkbox").each(function() {
+            $(this).prop("checked", checkedStatus);
+        });
+    });
+
+    $(`#{{paginator.currentPage}}`).addClass("active");
+
+    const search = `{{search}}` || undefined;
+    const sortBy = `{{query.sortBy}}`|| undefined;
+    const order = `{{query.order}}`|| undefined;
+    const role = `{{query.role}}` || undefined;
+    const active = `{{query.active}}` || undefined;
+    const limit = `{{query.limit}}` || undefined;
+    const paginatorLimit = `{{paginator.limit}}` || undefined;
+    const limitError = `{{errors.limit}}` || undefined;
+    let query = "";
+
+    if (limit) {
+        $("#limit").val(limit);
+        query += `&limit=${limit}`;
+    } else if (paginatorLimit) {
+        $("#limit").val(paginatorLimit);
+    }
+
+    if (limitError) {
+        $("#limit").css({"pointer-events": "none"}).tooltip("show");
+    }
+
+    if (search) { query += `&search=${search}`; }
+
+    if (sortBy && order) {
+        $("#sortBy").val(sortBy);
+        $("#order").val(order);
+        query += `&sortBy=${col}&order=${order}`;
+    }
+
+    if (role) {
+        $("#role").val(role);
+        query += `&role=${role}`;
+    }
+
+    if (active) {
+        $("#active").prop("checked", true);
+        query += `&active=1`;
+    }
+
+    $("#pager li a").each(function() {
+        this.href += query;
+    });
+</script>
+
+{{> footer }}
