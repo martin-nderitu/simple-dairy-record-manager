@@ -1,6 +1,6 @@
 ## Simple Dairy Record Manager Frontend
 
-Frontend for a simple dairy record manager\
+Frontend for a simple dairy record manager
 ## [**Demo**](https://dairy-record-manager.herokuapp.com/)
 
 ## Available Scripts
